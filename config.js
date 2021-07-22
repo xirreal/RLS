@@ -19,15 +19,15 @@ const config = {
     }
 };
 
-/* Repo module template */
-// type: "" // "module" or "theme" (must be lowercase)
-// url: "", // Full url to repo (https://github.com/user/repo)
-// subdir: "", // Subdirectory for modules if necessary, leave "" if not used.
-// generateSettings: false, // Whether or not to auto generate settings for themes (true, false)
-// preprocessor: "" // Autoport preprocessor (pcTheme, pcPlugin, bdTheme)
-
 const repos = [
-
+    {   /* Repo module template */
+        // [Required] means value must not be undefined.
+        // type: "", // [Required] "module" or "theme" (must be lowercase)
+        // url: "", // [Required] Full url to repo (https://github.com/user/repo)
+        // subdir: "", // [Required] Subdirectory for modules if necessary, leave "" if not used.
+        // generateSettings: false, // Whether or not to auto generate settings for themes (true, false)
+        // preprocessor: "" // Autoport preprocessor (pcTheme, pcPlugin, bdTheme)
+    }
 ];
 
 const tokens = {

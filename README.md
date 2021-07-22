@@ -14,17 +14,18 @@ Supports live updating using GitHub webhooks.
 ## Usage
 
 To get this working you'll need to:
-0. Install [Node 15 or newer](https://nodejs.org/) and install [git](https://git-scm.com/).
-1. [Get your own GitHub Personal Access Token](https://docs.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
-2. [Get a Discord bot token](https://discord.com/developers).
-3. Choose a secret for your webhooks.
-4. Configure `config.js`.
+
+1. Install [Node 15 or newer](https://nodejs.org/) and install [git](https://git-scm.com/).
+2. [Get your own GitHub Personal Access Token](https://docs.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
+3. [Get a Discord bot token](https://discord.com/developers).
+4. Choose a secret for your webhooks.
+5. Configure `config.js`.
     - You'll need to add some modules and add the tokens.
-5. (Optional) Setup a webhook on your repo.
+6. (Optional) Setup a webhook on your repo.
     - Use the secret you used in the config file (`config.js`).
     - Set `Content type` to `application/json`
     - Set the URL accordingly to what you configured in the `config.js` file. (Default value: `http://example.com:4456/api/github/webhooks`)
-6. To run, simply do `npm run server`
+7. To run, simply do `npm run server`
 
 > Note: For full functionality you'll need to install "ImageMagick" since it's used to generate the images to show on the website. ms2builder requirement.
 

@@ -1,0 +1,47 @@
+{
+  "name": "rls",
+  "version": "1.0.0",
+  "description": "Bundler and webserver for GooseMod repos.",
+  "main": "src/index.js",
+  "scripts": {
+    "server": "node ./src/index.js",
+    "check": "node ./scripts/pccompatCheck.js",
+    "clonegm": "git clone https://github.com/GooseMod/GooseMod",
+    "updategm": "cd GooseMod && git pull"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xirreal/RLS.git"
+  },
+  "author": "Ducko, Alethéia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xirreal/RLS/issues"
+  },
+  "homepage": "https://github.com/xirreal/RLS#readme",
+  "dependencies": {
+    "@octokit/webhooks": "^9.11.0",
+    "axios": "^0.21.1",
+    "glob": "^7.1.6",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.32.8"
+  },
+  "alias": {
+    "@goosemod/patcher": "./moduleWrappers/goosemod/patcher.js",
+    "@goosemod/webpack": "./moduleWrappers/goosemod/webpack.js",
+    "@goosemod/webpack/common": "./moduleWrappers/goosemod/webpackCommon.js",
+    "@goosemod/logger": "./moduleWrappers/goosemod/logger.js",
+    "@goosemod/reactUtils": "./moduleWrappers/goosemod/reactUtils.js",
+    "@goosemod/toast": "./moduleWrappers/goosemod/toast.js",
+    "@goosemod/settings": "./moduleWrappers/goosemod/settings.js",
+    "@goosemod/plugin": "./moduleWrappers/goosemod/plugin.js",
+    "powercord/entities": "./moduleWrappers/powercord/entities.js",
+    "powercord/injector": "./moduleWrappers/powercord/injector.js",
+    "powercord/webpack": "./moduleWrappers/powercord/webpack.js",
+    "powercord/util": "./moduleWrappers/powercord/util.js",
+    "powercord/components/settings": "./moduleWrappers/powercord/components/settings/index.js",
+    "_powercord/global": "./moduleWrappers/powercord/global/index.js",
+    "electron": "./moduleWrappers/electron/index.js"
+  },
+  "type": "module"
+}

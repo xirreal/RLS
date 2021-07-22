@@ -14,6 +14,7 @@ Supports live updating using GitHub webhooks.
 ## Usage
 
 To get this working you'll need to:
+0. Install [Node 15 or newer](https://nodejs.org/) and install [git](https://git-scm.com/).
 1. [Get your own GitHub Personal Access Token](https://docs.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
 2. [Get a Discord bot token](https://discord.com/developers).
 3. Choose a secret for your webhooks.
@@ -26,3 +27,10 @@ To get this working you'll need to:
 6. To run, simply do `npm run server`
 
 > Note: For full functionality you'll need to install "ImageMagick" since it's used to generate the images to show on the website. ms2builder requirement.
+
+# Available `npm scripts`
+
+1. `npm run server`, main script used to start RLS.
+2. `npm run check <repoName>`, used to check if a Powercord Plugin can be ported to GooseMod.
+3. `npm run clonegm`, clones GooseMod, required for using PC Compat Check.
+4. `npm run updategm`, updates GooseMod.

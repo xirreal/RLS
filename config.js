@@ -1,39 +1,43 @@
 const config = {
-    repo: {
-        modules: {
+    repos: [
+        {
             name: "RLS Modules",
-            description: "Default RLS description."
+            description: "Default RLS description.",
+            repoId: "modules"
         },
-        themes: {
+        {
             name: "RLS themes",
-            description: "Default RLS description."
+            description: "Default RLS description.",
+            repoId: "themes"
         }
-    },
+    ],
     web: {
         name: "RLS Web preview",
-        description: "Default RLS description."
+        description: "Default RLS description.",
+        port: "80"
     },
     webhook: {
-        path: "/api/github/webhooks",
+        path: "/webhooks",
         port: "4456"
     }
 };
 
-const repos = [
-    {   /* Repo module template */
+const modules = [
+    {   /* Module template */
         // [Required] means value must not be undefined.
-        // type: "", // [Required] "module" or "theme" (must be lowercase)
-        // url: "", // [Required] Full url to repo (https://github.com/user/repo)
-        // subdir: "", // [Required] Subdirectory for modules if necessary, leave "" if not used.
-        // generateSettings: false, // Whether or not to auto generate settings for themes (true, false)
-        // preprocessor: "" // Autoport preprocessor (pcTheme, pcPlugin, bdTheme)
+        targetRepo: "", // [Required] Must be a repo id.
+        url: "", // [Required] Full url to repo (https://github.com/user/repo)
+        subdir: "", // [Required] Subdirectory for modules if necessary, leave "" if not used.
+        generateSettings: false, // Whether or not to auto generate settings for themes (true, false)
+        preprocessor: "", // Autoport preprocessor (pcTheme, pcPlugin, bdTheme)
+        manifestOverrides : {} // Overrides for the manifest of autoports
     }
 ];
 
 const tokens = {
-    webhook: "",
-    github: "",
-    discord: ""
+    webhook: process.env.WEBHOOK, // Webhook secret
+    github: process.env.GH_PAT, // GH Private Access Token
+    discord: process.env.DISCORD // Discord bot token
 }
 
-export { config, repos, tokens };
+export { config, modules, tokens };

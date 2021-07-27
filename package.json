@@ -4,7 +4,7 @@
   "description": "Bundler and webserver for GooseMod repos.",
   "main": "src/index.js",
   "scripts": {
-    "server": "node ./src/index.js",
+    "server": "node -r dotenv/config ./src/index.js",
     "check": "node ./scripts/pccompatCheck.js",
     "clonegm": "git clone https://github.com/GooseMod/GooseMod",
     "updategm": "cd GooseMod && git pull"
@@ -22,6 +22,7 @@
   "dependencies": {
     "@octokit/webhooks": "^9.11.0",
     "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
     "glob": "^7.1.6",
     "parcel-bundler": "^1.12.4",
     "sass": "^1.32.8"

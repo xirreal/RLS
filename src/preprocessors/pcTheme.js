@@ -2,9 +2,10 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 import sass from 'sass';
 
 import generateThemeJS from './genericTheme.js';
+import { join } from 'path';
 
 export default async (manifestPath, repo) => {
-  const pcManifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const pcManifest = JSON.parse(readFileSync(join(manifestPath, "powercord_manifest.json"), 'utf8'));
 
   let manifest = {
     main: 'index.js',
@@ -17,8 +18,8 @@ export default async (manifestPath, repo) => {
     authors: [ pcManifest.author ]
   };
 
-  rmSync(manifestPath);
-  mkdirSync(manifestPath);
+//   rmSync(manifestPath);
+//   mkdirSync(manifestPath);
 
   if (pcManifest.theme.split('.').pop() === 'scss') {
     const cssPath = pcManifest.theme.split('.').slice(0, -1).concat('css').join('.');

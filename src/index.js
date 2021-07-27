@@ -16,10 +16,7 @@ import { createHash } from 'crypto';
 import { dirname, sep } from 'path';
 import { fileURLToPath } from 'url';
 
-import { config, repos, tokens } from '../config.js';
-import { Webhooks, createNodeMiddleware } from '@octokit/webhooks';
-
-const webhooks = new Webhooks({ secret: tokens.webhook });
+import { config, tokens } from '../config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -31,10 +28,9 @@ global.distDir = distDir;
 const modulesDir = `${distDir}/module`;
 
 const resetDir = (dir) => {
-    if(existsSync(dir)) {
+    if(existsSync(dir)) 
         rmSync(dir, { recursive: true, force: true });
-        mkdirSync(dir, { recursive: true });
-    }
+    mkdirSync(dir, { recursive: true });
 };
 
 // Cleanup old directories on boot
@@ -84,7 +80,6 @@ const generateDistForRepo = async (parentRepo) => {
         console.log("[Bundler] Building " + name.concat(repo.subdir))
 
         const previousBuildCommit = builtModules.get(name.concat(repo.subdir));
-
 
         if (existsSync(cloneDir) && previousBuildCommit) {
 
@@ -160,7 +155,9 @@ const generateDistForRepo = async (parentRepo) => {
                 repo: repo.url
             },
         
-            lastUpdated: parseInt(commitTimestamp)
+            lastUpdated: parseInt(commitTimestamp),
+
+            ...repo.manifestOverrides
         };
     
         if (manifest.images) manifestJson.images = manifest.images;
@@ -192,18 +189,22 @@ for(const parentRepo of ModuleRepos) {
 }
 await SiteGen();
 
-webhooks.on("push", async ({ id, name, payload }) => {
-    console.log("[Webhook] Received webhook message from " + payload.repository.full_name)
-    const module = repos.find(module => module.url.split(`https://github.com/`).pop() == payload.repository.full_name);
-    if(!module) return console.log("[Webhook] Repository not found in configuration file.");
-    (module.type == "module" ? await generateDistForRepo(ModuleRepos[0]) : await generateDistForRepo(ModuleRepos[1]));
-    await SiteGen();
-});
-
 console.log("[Website] Deploying webservers...");
 
 import http from "http";
-http.createServer(createNodeMiddleware(webhooks, { path: config.webhook.path })).listen(config.webhook.port);
+if(tokens.webhook) {
+    const { Webhooks, createNodeMiddleware} = await import("@octokit/webhooks");
+    const webhooks = new Webhooks({ secret: tokens.webhook });
+    webhooks.on("push", async ({ id, name, payload }) => {
+        console.log("[Webhook] Received webhook message from " + payload.repository.full_name)
+        const module = modules.find(module => module.url.split(`https://github.com/`).pop() == payload.repository.full_name);
+        if(!module) return console.log("[Webhook] Repository not found in configuration file.");
+        (module.type == "module" ? await generateDistForRepo(ModuleRepos[0]) : await generateDistForRepo(ModuleRepos[1]));
+        await SiteGen();
+    });
+
+    http.createServer(createNodeMiddleware(webhooks, { path: config.webhook.path })).listen(config.webhook.port);
+}
 http.createServer((req, res) => {
 
     const ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress || req.connection.remoteAddress;
@@ -241,4 +242,4 @@ http.createServer((req, res) => {
       res.writeHead(200, { 'Content-Type': contentType, 'Access-Control-Allow-Origin': '*' });
       res.end(content, 'utf-8');
     });
-  }).listen(80).on("listening", () => console.log("[Website] Done!"));
+  }).listen(config.web.port).on("listening", () => console.log("[Website] Done!"));

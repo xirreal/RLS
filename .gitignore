@@ -2,6 +2,7 @@ node_modules
 .cache
 .github
 pnpm-lock.yaml
-clones
-dist
-GooseMod
+/clones/*
+/dist/*
+/GooseMod
+/.env

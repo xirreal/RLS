@@ -5,9 +5,9 @@ import sass from 'sass';
 import glob from 'glob';
 
 export default (manifestPath, repo) => {
-  const baseDir = join(manifestPath, '..');
+  const baseDir = manifestPath;
 
-  const pcManifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const pcManifest = JSON.parse(readFileSync(join(manifestPath, "manifest.json"), 'utf8'));
 
   let manifest = {
     main: 'index.js',
@@ -42,7 +42,7 @@ export default (manifestPath, repo) => {
   writeFileSync(join(baseDir, `index.js`), content);
 
   for (const jsFile of glob.sync(`${baseDir}/**/*.{js,jsx,ts,tsx}`)) {
-    console.log(jsFile);
+    //console.log(jsFile);
     let content = readFileSync(jsFile, 'utf8');
 
     /* Here we preappend some JS to each file to match context and fix some weird bundler bugs:

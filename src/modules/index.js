@@ -1,24 +1,21 @@
-import { modules, themes } from './parseRepos.js';
-import { config } from '../../config.js';
+import { config, modules } from '../../config.js';
 
-export default [
-  {
-    meta: {
-      name: config.repo.modules.name,
-      description: config.repo.modules.description,
-    },
+if(!config.repos.length) {
+    console.error("No repos configured.");
+    process.exit(1);
+}
 
-    filename: 'modules',
-    modules: modules
-  },
+const repos = [];
+config.repos.forEach(repo => {
+    repos.push({
+        meta: {
+            name: repo.name,
+            description: repo.description,
+          },
+      
+          filename: repo.repoId,
+          modules: (modules.filter(module => module.targetRepo == repo.repoId))
+    });
+});
 
-  {
-    meta: {
-      name: config.repo.themes.name,
-      description: config.repo.themes.description,
-    },
-
-    filename: 'themes',
-    modules: themes
-  }
-];
+export default repos;

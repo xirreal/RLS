@@ -3,7 +3,13 @@ const config = {
         {
             name: "RLS Modules",
             description: "Default RLS description.",
-            repoId: "modules"
+            repoId: "modules",
+            pgp: {
+                privateKey: `./keys/private.key`,
+                publicKey: `./keys/public.key`,
+                /* Not suggested, enter the passphrase on first startup instead! */
+                //passphrase: `./keys/passphrase.key`
+            }
         },
         {
             name: "RLS themes",

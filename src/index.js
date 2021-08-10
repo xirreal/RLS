@@ -4,6 +4,7 @@ import AutoTag from './autoTag.js';
 import ImageCDN from './imageCdn.js';
 import AuthorGen from './authorGen.js';
 import SiteGen from './siteGen/index.js';
+import pgpSign from './pgpSign.js';
 
 import Parcel from 'parcel-bundler';
 import axios from 'axios';
@@ -13,7 +14,7 @@ import { exec } from 'child_process';
 import { rmSync, mkdirSync, readFileSync, writeFileSync, existsSync, readFile } from 'fs';
 import { createHash } from 'crypto';
 
-import { dirname, sep } from 'path';
+import { dirname, sep, join } from 'path';
 import { fileURLToPath } from 'url';
 
 import { config, tokens } from '../config.js';
@@ -63,6 +64,8 @@ const getGithubInfo = async (repo) => {
 const builtModules = new Map();
 
 const generateDistForRepo = async (parentRepo) => {
+
+    const pgp = config.repos.find(repo => repo.name == parentRepo.meta.name).pgp;
 
     let moduleJson = {
         modules: [],
@@ -183,7 +186,9 @@ const generateDistForRepo = async (parentRepo) => {
     
     moduleJson.modules = moduleJson.modules.filter((x) => x !== null);
     
+    process.chdir(join(__dirname, ".."));
     writeFileSync(repoJsonPath, JSON.stringify(moduleJson));
+    if(pgp) await pgpSign(`${parentRepo.filename}.json`, repoJsonPath, JSON.stringify(moduleJson), pgp);
 }
 
 for(const parentRepo of ModuleRepos) {

@@ -13,7 +13,7 @@ export default async (name, path, content, pgp) => {
         } catch(e) {};
     }
 
-    if(!pgp.passphrase) {
+    if(typeof(pgp.passphrase) === "undefined") {
         console.log(`[PGP] Passphrase required to sign "${name}".`);
         pgp.passphrase = getPassphrase('[PGP] Enter passphrase: ', {
             confirmMessage: "[PGP] Input the passphrase again to confirm: ",
@@ -26,7 +26,7 @@ export default async (name, path, content, pgp) => {
     try {
         const publicKey = await openpgp.readKey({ armoredKey: pgp.publicKey });
 
-        const privateKey = await openpgp.decryptKey({
+        const privateKey = pgp.passphrase == "" ? await openpgp.readPrivateKey({ armoredKey: pgp.privateKey }) : await openpgp.decryptKey({
             privateKey: await openpgp.readPrivateKey({ armoredKey: pgp.privateKey }),
             passphrase: pgp.passphrase
         });

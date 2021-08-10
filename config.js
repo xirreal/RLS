@@ -8,6 +8,7 @@ const config = {
                 privateKey: `./keys/private.key`,
                 publicKey: `./keys/public.key`,
                 /* Not suggested, enter the passphrase on first startup instead! */
+                // Define as an empty string to disable passphrase check
                 //passphrase: `./keys/passphrase.key`
             }
         },

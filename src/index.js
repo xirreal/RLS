@@ -17,7 +17,7 @@ import { createHash } from 'crypto';
 import { dirname, sep, join } from 'path';
 import { fileURLToPath } from 'url';
 
-import { config, tokens } from '../config.js';
+import { config, modules, tokens } from '../config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -206,7 +206,7 @@ if(tokens.webhook) {
         console.log("[Webhook] Received webhook message from " + payload.repository.full_name)
         const module = modules.find(module => module.url.split(`https://github.com/`).pop() == payload.repository.full_name);
         if(!module) return console.log("[Webhook] Repository not found in configuration file.");
-        (module.type == "module" ? await generateDistForRepo(ModuleRepos[0]) : await generateDistForRepo(ModuleRepos[1]));
+        await generateDistForRepo(ModuleRepos.find(repo => repo.filename == module.targetRepo));
         await SiteGen();
     });
 

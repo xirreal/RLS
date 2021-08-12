@@ -62,6 +62,7 @@ const getGithubInfo = async (repo) => {
 };
 
 const builtModules = new Map();
+const previousManifests = new Map();
 
 const generateDistForRepo = async (parentRepo) => {
 
@@ -94,6 +95,8 @@ const generateDistForRepo = async (parentRepo) => {
             if (currentHash !== previousBuildCommit && currentHash !== '') rmSync(cloneDir, { recursive: true, force: true });
             else {
                 console.log("[Bundler] Skipping " + name.concat(repo.subdir) + ". Already up to date.");
+                const previousManifest = previousManifests.get(name.concat(repo.subdir));
+                moduleJson.modules.push(previousManifest);
                 continue;
             }
         }
@@ -180,6 +183,7 @@ const generateDistForRepo = async (parentRepo) => {
     
         moduleJson.modules.push(manifestJson);
         builtModules.set(name.concat(repo.subdir), lastHash);
+        previousManifests.set(name.concat(repo.subdir), manifestJson);
     
         console.timeEnd("[Bundler] " + name.concat(repo.subdir));
     }

@@ -111,6 +111,8 @@ const generateDistForRepo = async (parentRepo) => {
     
         process.chdir(cloneDir);
 
+        await new Promise((res) => exec(`git pull`));
+
         const lastHash = await new Promise((res) => exec(`git rev-parse HEAD`, (err, stdout) => res(stdout.trim())));
         const commitTimestamp = await new Promise((res) => exec(`git log -1 --format="%at" | xargs -I{} date -d @{} +%s`, (err, stdout) => res(stdout.trim())));
     
